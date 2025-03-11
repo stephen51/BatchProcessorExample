@@ -3,7 +3,6 @@ package com.learning.springbatch.BatchProcessorExample.config;
 import com.learning.springbatch.BatchProcessorExample.entity.Employee;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
-import org.springframework.validation.BindException;
 
 public class EmployeeFieldMapper implements FieldSetMapper<Employee> {
     @Override

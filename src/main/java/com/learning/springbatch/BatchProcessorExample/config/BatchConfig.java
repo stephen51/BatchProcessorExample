@@ -52,7 +52,6 @@ public class BatchConfig {
     private EmployeeItemWriter employeeItemWriter;
 
     @Bean
-    //@JobScope
     public Job job(JobRepository jobRepository, Step step){
         return new JobBuilder("job", jobRepository)
                 .listener(listener)
@@ -61,7 +60,6 @@ public class BatchConfig {
     }
 
     @Bean
-    //@StepScope
     public Step step(JobRepository jobRepository,
                      PlatformTransactionManager transactionManager,
                      JdbcBatchItemWriter<Employee> writer){

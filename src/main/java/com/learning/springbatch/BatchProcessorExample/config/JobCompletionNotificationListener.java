@@ -21,23 +21,13 @@ public class JobCompletionNotificationListener implements JobExecutionListener {
         log.info("!!! STARTING JOB");
         log.info("Clearing old Records from Employees_info Table");
         employeesRepo.deleteAllInBatch();
-
     }
 
-    //private final JdbcTemplate jdbcTemplate;
-
-//    public JobCompletionNotificationListener(JdbcTemplate jdbcTemplate) {
-//        this.jdbcTemplate = jdbcTemplate;
-//    }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED! Time to verify the results");
-
-            /*jdbcTemplate
-                    .query("SELECT count(*) FROM employees_info", new DataClassRowMapper<>(Employee.class))
-                    .forEach(person -> log.info("Found <{}> in the database.", person));*/
         }
     }
 }

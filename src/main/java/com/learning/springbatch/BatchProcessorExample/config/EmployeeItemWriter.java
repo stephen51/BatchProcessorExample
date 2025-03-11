@@ -6,8 +6,6 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class EmployeeItemWriter implements ItemWriter<Employee> {
 
