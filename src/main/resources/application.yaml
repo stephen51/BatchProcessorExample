@@ -26,6 +26,7 @@ spring:
       enabled: false
 
 input.filepath: C:\Users\istep\Downloads\employees.csv
+output.filepath: C:\Users\istep\Downloads\employeesFromITDepartment.csv
 
 
 

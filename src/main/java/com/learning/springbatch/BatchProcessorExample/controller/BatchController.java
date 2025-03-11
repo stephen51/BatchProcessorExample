@@ -23,19 +23,35 @@ public class BatchController {
     @Value("${input.filepath}")
     private String inputFilePath;
 
+    @Value("${output.filepath}")
+    private String outputFilePath;
+
     @Autowired
     private JobLauncher jobLauncher;
 
     @Autowired
     private Job job;
 
+    @Autowired
+    private Job fetchItDepartmentJob;
+
     @GetMapping("/start")
-    public String startBatch() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    public String readerBatch() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         JobParameters params = new JobParametersBuilder()
                 .addString("startAt", new Timestamp(System.currentTimeMillis()).toString())
                 .addString("filepath",inputFilePath)
                 .toJobParameters();
         jobLauncher.run(job,params);
-        return "Batch started successfully";
+        return "Batch Completed successfully";
+    }
+
+    @GetMapping("/fetchItDepartment")
+    public String writerBatch() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+        JobParameters params = new JobParametersBuilder()
+                .addString("startAt", new Timestamp(System.currentTimeMillis()).toString())
+                .addString("filepath",outputFilePath)
+                .toJobParameters();
+        jobLauncher.run(fetchItDepartmentJob,params);
+        return "Batch Completed successfully";
     }
 }
