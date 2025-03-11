@@ -22,6 +22,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -56,12 +59,14 @@ public class BatchConfig {
     public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager,
                      JdbcBatchItemWriter<Employee> writer){
         return new StepBuilder("step",jobRepository)
-                .<Employee,Employee>chunk(100, transactionManager)
+                .<Employee,Employee>chunk(1000, transactionManager)
                 .reader(reader())
                 .processor(employeeProcessor)
                 .writer(writer)
                 .build();
     }
+
+
 
     @Bean
     @StepScope
@@ -73,8 +78,6 @@ public class BatchConfig {
                 .names("id","first_name","last_name","email","department","salary","hire_date")
                 .strict(true)
                 .fieldSetMapper(new EmployeeFieldMapper())
-                //.lineMapper()
-                //.targetType(Employee.class)
                 .linesToSkip(1)
                 .build();
     }

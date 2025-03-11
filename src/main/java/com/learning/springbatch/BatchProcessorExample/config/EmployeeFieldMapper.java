@@ -7,7 +7,7 @@ import org.springframework.validation.BindException;
 
 public class EmployeeFieldMapper implements FieldSetMapper<Employee> {
     @Override
-    public Employee mapFieldSet(FieldSet fieldSet) throws BindException {
+    public Employee mapFieldSet(FieldSet fieldSet) {
         Employee employee = new Employee();
         employee.setId(fieldSet.readLong(0));
         employee.setFirstName(fieldSet.readString(1));
