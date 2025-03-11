@@ -15,4 +15,5 @@ samples:
         3) Multithreaded approach(5 threads) + chunk size is 1000, completed in  4 seconds
 
 2) Read from database, process and write to csv file
+   
    query used: fetch employees from IT department and salary in asc order
