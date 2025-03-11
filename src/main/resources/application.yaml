@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: BatchProcessorExample
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: myuser
+    password: mypassword
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: 'create-drop'
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format-sql: true
+      show-sql: true
+
+  batch:
+    jdbc:
+      initialize-schema: ALWAYS
+    job:
+      enabled: false
+
+input.filepath: C:\Users\istep\Downloads\employees.csv
+
+
+
+
