@@ -17,6 +17,7 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.repeat.RepeatOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,8 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -45,6 +48,9 @@ public class BatchConfig {
     @Autowired
     private JobCompletionNotificationListener listener;
 
+    @Autowired
+    private EmployeeItemWriter employeeItemWriter;
+
     @Bean
     //@JobScope
     public Job job(JobRepository jobRepository, Step step){
@@ -56,14 +62,27 @@ public class BatchConfig {
 
     @Bean
     //@StepScope
-    public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+    public Step step(JobRepository jobRepository,
+                     PlatformTransactionManager transactionManager,
                      JdbcBatchItemWriter<Employee> writer){
         return new StepBuilder("step",jobRepository)
                 .<Employee,Employee>chunk(1000, transactionManager)
                 .reader(reader())
                 .processor(employeeProcessor)
                 .writer(writer)
+                .taskExecutor(taskExecutor())
                 .build();
+    }
+
+    @Bean
+    public ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);  // Define number of concurrent threads
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(25);
+        executor.setThreadNamePrefix("batch-thread-");
+        executor.initialize();
+        return executor;
     }
 
 
@@ -93,10 +112,10 @@ public class BatchConfig {
 
     @Bean
     public RepositoryItemWriter<Employee> employeeRepositoryItemWriter(){
-        return new RepositoryItemWriterBuilder<Employee>()
-                .repository(employeesRepo)
-                .methodName("saveAll")
-                .build();
+        RepositoryItemWriter<Employee> writer = new RepositoryItemWriter<>();
+        writer.setRepository(employeesRepo);
+        writer.setMethodName("saveAll");
+        return writer;
     }
 
 

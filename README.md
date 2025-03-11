@@ -11,3 +11,5 @@ samples:
         1) chunk size is 100, completed in 26 seconds
    
         2) chunk size is 1000, completed in 10 seconds
+
+        3) Multithreaded approach(5 threads) + chunk size is 1000, completed in  4 seconds

@@ -7,6 +7,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/mydatabase
     username: myuser
     password: mypassword
+    hikari:
+      auto-commit: false
   jpa:
     open-in-view: false
     hibernate:
@@ -15,7 +17,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
-      show-sql: true
+    show-sql: false
 
   batch:
     jdbc:
