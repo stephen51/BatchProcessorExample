@@ -43,14 +43,17 @@ public class BatchReaderConfig {
     @Autowired
     private EmployeeRowMapper employeeRowMapper;
 
+    @Autowired
+    private CustomSkipListener customSkipListener;
+
     @Bean
     public Job fetchItDepartmentJob() {
         return new JobBuilder("fetchItDepartmentJob",jobRepository)
                 .start(step1())
+                //.listener(customSkipListener)
                 .build();
 
     }
-
 
     @Bean
     public Step step1(){
@@ -59,6 +62,7 @@ public class BatchReaderConfig {
                 .reader(empReader())
                 .processor(empProcessor())
                 .writer(empWriter())
+                .listener(customSkipListener)
                 .build();
     }
 

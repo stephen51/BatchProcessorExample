@@ -4,9 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity(name = "employees_info")
+@ToString
 public class Employee {
     @Id
     @Column(name = "id")
