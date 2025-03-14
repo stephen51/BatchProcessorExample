@@ -4,7 +4,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/mydatabase
+    url: jdbc:postgresql://postgres:5432/mydatabase
     username: myuser
     password: mypassword
     hikari:
@@ -12,7 +12,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: 'create-drop'
+      ddl-auto: 'create'
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -25,8 +25,8 @@ spring:
     job:
       enabled: false
 
-input.filepath: C:\Users\istep\Downloads\employees.csv
-output.filepath: C:\Users\istep\Downloads\employeesFromITDepartment.csv
+input.filepath: /app/data/employees.csv
+output.filepath: /app/data/employeesFromITDepartment.csv
 
 
 
